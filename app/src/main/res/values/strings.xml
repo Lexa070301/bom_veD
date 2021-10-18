@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Лабораторная работа 1</string>
+    <string name="AppBar_title">Главная страница</string>
+    <string name="Item_name_example">ФИО человека</string>
+    <string name="Item_date_example">1845 – 1903</string>
+    <string name="Item_information_example">император французов (фр. Empereur des Français) в 1804—1814 и 1815 годах, полководец и государственный деятель
+    император французов (фр. Empereur des Français) в 1804—1814 и 1815 годах, полководец и государственный деятель</string>
+    <string name="Item_gender_type_example">Мужчина</string>
+</resources>

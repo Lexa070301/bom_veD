@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_items">8dp</dimen>
+    <dimen name="margin_items_2x">16dp</dimen>
+
+    <dimen name="icon_width">40dp</dimen>
+    <dimen name="icon_height">40dp</dimen>
+    <dimen name="button_like_width">24dp</dimen>
+    <dimen name="button_like_height">24dp</dimen>
+
+    <dimen name="textSizeNormal">16sp</dimen>
+</resources>

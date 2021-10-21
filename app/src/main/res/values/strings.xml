@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Лабораторная работа 1</string>
+    <string name="app_name">bom_veD</string>
     <string name="AppBar_title">Главная страница</string>
     <string name="Item_name_example">ФИО человека</string>
     <string name="Item_date_example">1845 – 1903</string>

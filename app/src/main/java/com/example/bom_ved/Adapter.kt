@@ -8,8 +8,9 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bom_ved.databinding.ItemRecyclerviewBinding
 import kotlin.reflect.KFunction2
 
-class Adapter(private val list: List<Picture>,
-              private val clickItem: KFunction2<Picture, String, Unit>
+class Adapter(
+    private val list: ArrayList<Picture>,
+    private val clickItem: KFunction2<Picture, String, Unit>
 ): RecyclerView.Adapter<Adapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,9 +26,12 @@ class Adapter(private val list: List<Picture>,
         return list.size
     }
 
+    private fun exampleFilter(){
+
+    }
+
     inner class Holder internal constructor(private val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(picture: Picture, clickItem: KFunction2<Picture, String, Unit>) = binding.run{
-
             itemName.text = picture.Name
             imageAvatar.load(picture.imageURL){
                 transformations(RoundedCornersTransformation(20f))

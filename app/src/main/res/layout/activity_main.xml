@@ -10,33 +10,28 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appBar"
-        style="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_primary"
-        app:layout_constraintBottom_toTopOf="@+id/recycleView"
-        app:layout_constraintEnd_toEndOf="parent"
+
         app:title="@string/AppBar_title"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fragment_container"
         app:menu="@menu/menu"
         app:titleTextColor="@color/white" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
-        android:clipChildren="false"
-        android:clipToPadding="false"
-
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_recyclerview">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

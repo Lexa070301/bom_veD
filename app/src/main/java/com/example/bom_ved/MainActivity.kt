@@ -23,7 +23,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), ActivityCallBack {
+class MainActivity : AppCompatActivity() {
     private lateinit var bindingMain: ActivityMainBinding
     private lateinit var bindindFragmentViewHolder: FrameRecycleViewBinding
     private val fragmentList: MutableList<Fragment> = mutableListOf()
@@ -42,21 +42,22 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
         bindingMain = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMain.root)
         setSupportActionBar(bindingMain.appBar)
+        setupRecycleView()
 
-        fragmentList.add(FragmentViewHolder())
-        fragmentList.add(FragmentItemDetail())
+//        fragmentList.add(FragmentViewHolder())
+//        fragmentList.add(FragmentItemDetail())
+//
+//        val transactionInitialization = supportFragmentManager
+//            .beginTransaction()
+//            .add(R.id.fragment_container, fragmentList[0])
+//            .add(R.id.fragment_container, fragmentList[1])
+//            .detach(fragmentList[1])
+//            .addToBackStack("initialization fragment")
+//        transactionInitialization.commit()
 
-        val transactionInitialization = supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, fragmentList[0])
-            .add(R.id.fragment_container, fragmentList[1])
-            .detach(fragmentList[1])
-            .addToBackStack("initialization fragment")
-        transactionInitialization.commit()
-
-        val bundle = Bundle()
-        bundle.putParcelable("2323", BaseParcelable(fragmentList))
-        fragmentList[0].arguments = bundle
+//        val bundle = Bundle()
+//        bundle.putParcelable("2323", BaseParcelable(fragmentList))
+//        fragmentList[0].arguments = bundle
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -85,17 +86,8 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun showSnackbar(picture: Picture, trigger: String): Unit{
-        var text: String = "Произошла ошибка"
-        when (trigger){
-            "itemInfo" -> text = "Нажата карточка: " + picture.Name
-            "like" -> text = "Нажат лайк: " + picture.Name
-        }
-        Snackbar.make(bindingMain.root, text, 3000).show()
-    }
-
     @SuppressLint("NotifyDataSetChanged")
-    override fun searchFilter(text: String): String {
+    private fun searchFilter(text: String){
         val searchText = text.lowercase(Locale.getDefault())
         val newPicture = mutableListOf<Picture>()
 
@@ -112,40 +104,55 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
             pictureCollection.clear()
             pictureCollection.addAll(UserHolder.createCollectionPictures())
         }
-//        bindindFragmentViewHolder.recycleView.adapter?.notifyDataSetChanged()
-
-        return "string2323"
-    }
-}
-
-interface ActivityCallBack {
-    fun searchFilter(inputText: String): String
-}
-
-class BaseParcelable : Parcelable {
-
-    var value: Any
-
-    constructor(value: Any) {
-        this.value = value
+        bindingMain.recycleView.adapter?.notifyDataSetChanged()
     }
 
-    constructor(parcel: Parcel) {
-        this.value = Any()
+    private fun setupRecycleView(){
+        bindingMain.recycleView.layoutManager = verticalLinearLayoutManager
+        val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        bindingMain.recycleView.adapter = Adapter(pictureCollection, this::showSnackbar)
     }
 
-    override fun writeToParcel(dest: Parcel?, flags: Int) {}
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<BaseParcelable> {
-
-        override fun createFromParcel(parcel: Parcel): BaseParcelable {
-            return BaseParcelable(parcel)
+    private fun showSnackbar(picture: Picture, trigger: String): Unit{
+        var text: String = "Произошла ошибка"
+        when (trigger){
+            "itemInfo" -> text = "Нажата карточка: " + picture.Name
+            "like" -> text = "Нажат лайк: " + picture.Name
         }
-
-        override fun newArray(size: Int): Array<BaseParcelable?> {
-            return arrayOfNulls(size)
-        }
+        Snackbar.make(bindingMain.root, text, 3000).show()
     }
 }
+
+
+
+//interface ActivityCallBack {
+//    fun searchFilter(inputText: String): String
+//}
+//
+//class BaseParcelable : Parcelable {
+//
+//    var value: Any
+//
+//    constructor(value: Any) {
+//        this.value = value
+//    }
+//
+//    constructor(parcel: Parcel) {
+//        this.value = Any()
+//    }
+//
+//    override fun writeToParcel(dest: Parcel?, flags: Int) {}
+//
+//    override fun describeContents(): Int = 0
+//
+//    companion object CREATOR : Parcelable.Creator<BaseParcelable> {
+//
+//        override fun createFromParcel(parcel: Parcel): BaseParcelable {
+//            return BaseParcelable(parcel)
+//        }
+//
+//        override fun newArray(size: Int): Array<BaseParcelable?> {
+//            return arrayOfNulls(size)
+//        }
+//    }
+//}

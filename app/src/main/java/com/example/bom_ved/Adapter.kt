@@ -9,25 +9,24 @@ import com.example.bom_ved.databinding.ItemRecyclerviewBinding
 import kotlin.reflect.KFunction2
 
 class Adapter(
-    private val list: List<Picture>,
+//    private val list: List<Picture> = listOf(),
     private val clickItem: KFunction2<Picture, String, Unit>
 ): RecyclerView.Adapter<Adapter.Holder>() {
+
+    var listItem: List<Picture> = listOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val picture = list[position]
+        val picture = listItem[position]
         holder.bind(picture, clickItem)
     }
 
     override fun getItemCount(): Int {
-        return list.size
-    }
-
-    private fun exampleFilter(){
-
+        return listItem.size
     }
 
     inner class Holder internal constructor(private val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root){

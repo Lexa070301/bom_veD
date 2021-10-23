@@ -26,6 +26,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     private lateinit var bindingMain: ActivityMainBinding
     private lateinit var bindindFragmentViewHolder: FrameRecycleViewBinding
+    private lateinit var adapter: Adapter
     private val fragmentList: MutableList<Fragment> = mutableListOf()
 
 
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 //            .detach(fragmentList[1])
 //            .addToBackStack("initialization fragment")
 //        transactionInitialization.commit()
-
 //        val bundle = Bundle()
 //        bundle.putParcelable("2323", BaseParcelable(fragmentList))
 //        fragmentList[0].arguments = bundle
@@ -97,10 +97,10 @@ class MainActivity : AppCompatActivity() {
                     Log.d("Filtered", it.Name)
                     newPicture.add(it)
                 }
+                adapter.listItem = newPicture
             }
-            pictureCollection = newPicture
         } else {
-            pictureCollection = UserHolder.createCollectionPictures()
+            adapter.listItem = UserHolder.createCollectionPictures()
         }
         bindingMain.recycleView.adapter?.notifyDataSetChanged()
     }
@@ -108,7 +108,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecycleView(){
         bindingMain.recycleView.layoutManager = verticalLinearLayoutManager
         val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        bindingMain.recycleView.adapter = Adapter(pictureCollection, this::showSnackbar)
+        adapter = Adapter(this::showSnackbar)
+        adapter.listItem = UserHolder.createCollectionPictures()
+        bindingMain.recycleView.adapter = adapter
     }
 
     private fun showSnackbar(picture: Picture, trigger: String): Unit{

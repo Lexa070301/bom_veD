@@ -9,7 +9,7 @@ import com.example.bom_ved.databinding.ItemRecyclerviewBinding
 import kotlin.reflect.KFunction2
 
 class Adapter(
-    private val list: ArrayList<Picture>,
+    private val list: List<Picture>,
     private val clickItem: KFunction2<Picture, String, Unit>
 ): RecyclerView.Adapter<Adapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

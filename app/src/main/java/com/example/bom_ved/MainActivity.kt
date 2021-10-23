@@ -98,11 +98,9 @@ class MainActivity : AppCompatActivity() {
                     newPicture.add(it)
                 }
             }
-            pictureCollection.clear()
-            pictureCollection.addAll(newPicture)
+            pictureCollection = newPicture
         } else {
-            pictureCollection.clear()
-            pictureCollection.addAll(UserHolder.createCollectionPictures())
+            pictureCollection = UserHolder.createCollectionPictures()
         }
         bindingMain.recycleView.adapter?.notifyDataSetChanged()
     }

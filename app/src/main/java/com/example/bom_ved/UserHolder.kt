@@ -96,7 +96,7 @@ object UserHolder {
         "Мужчина",
     )
 
-    fun createCollectionPictures(): ArrayList<Picture> {
+    fun createCollectionPictures(): List<Picture> {
         val pictures = mutableListOf<Picture>()
         for (i in 0..9){
             val picture = Picture(
@@ -108,7 +108,7 @@ object UserHolder {
             )
             pictures.add(picture)
         }
-        return pictures as ArrayList<Picture>
+        return pictures
     }
 
     fun createCollectionPictures2(): ArrayList<Picture>{

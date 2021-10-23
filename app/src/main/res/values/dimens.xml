@@ -5,8 +5,11 @@
 
     <dimen name="icon_width">40dp</dimen>
     <dimen name="icon_height">40dp</dimen>
+    <dimen name="icon_width_max">120dp</dimen>
+    <dimen name="icon_height_max">120dp</dimen>
     <dimen name="button_like_width">24dp</dimen>
     <dimen name="button_like_height">24dp</dimen>
 
     <dimen name="textSizeNormal">16sp</dimen>
+    <dimen name="textSizeMax">22sp</dimen>
 </resources>

@@ -1,63 +1,62 @@
 package com.example.bom_ved
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.AttributeSet
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bom_ved.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 import android.util.Log
 import android.view.Menu
-import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.bom_ved.databinding.FrameRecycleViewBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActivityCallBack {
     private lateinit var bindingMain: ActivityMainBinding
-    private lateinit var bindindFragmentViewHolder: FrameRecycleViewBinding
-    private lateinit var adapter: Adapter
+    private var viewHolder: FragmentViewHolder = FragmentViewHolder()
+    private var itemDetail: FragmentItemDetail = FragmentItemDetail()
     private val fragmentList: MutableList<Fragment> = mutableListOf()
 
 
-
-    private val verticalLinearLayoutManager: LinearLayoutManager =
-        LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-    private var pictureCollection = UserHolder.createCollectionPictures()
-
-
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         bindingMain = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMain.root)
         setSupportActionBar(bindingMain.appBar)
-        setupRecycleView()
 
-//        fragmentList.add(FragmentViewHolder())
-//        fragmentList.add(FragmentItemDetail())
-//
-//        val transactionInitialization = supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.fragment_container, fragmentList[0])
-//            .add(R.id.fragment_container, fragmentList[1])
-//            .detach(fragmentList[1])
-//            .addToBackStack("initialization fragment")
-//        transactionInitialization.commit()
-//        val bundle = Bundle()
-//        bundle.putParcelable("2323", BaseParcelable(fragmentList))
-//        fragmentList[0].arguments = bundle
+        bindingMain.appBar.setNavigationOnClickListener {
+            val transactionInitialization = supportFragmentManager
+                .beginTransaction()
+                .detach(fragmentList[1])
+                .attach(fragmentList[0])
+                .addToBackStack("swap fragment")
+            transactionInitialization.commit()
+            searchViewChanged(true, "Главная страница")
+        }
+
+        fragmentList.add(viewHolder)
+        fragmentList.add(itemDetail)
+
+        val transactionInitialization = supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, fragmentList[0])
+            .add(R.id.fragment_container, fragmentList[1])
+            .detach(fragmentList[1])
+            .addToBackStack("initialization fragment")
+        transactionInitialization.commit()
+
+        viewHolder.adapter.listItem = UserHolder.createCollectionPictures()
+        viewHolder.adapter.notifyDataSetChanged()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1){
+            supportFragmentManager.popBackStack()
+        }
+        searchViewChanged(true, "Главная страница")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,93 +65,62 @@ class MainActivity : AppCompatActivity() {
         val search = menu?.findItem(R.id.searchView)
         val searchView = search?.actionView as? SearchView
         searchView?.isSubmitButtonEnabled = false
-        searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-//                    val any = arguments.getParcelable<BaseParcelable>("picture")?.value
-//                    Log.d("PICTURE", any.toString())
-
-                    searchFilter(newText)
+                if (query != null) {
+                    searchFilter(query)
                 }
                 return true
             }
 
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query != null) {
+                    searchFilter(query)
+                }
+                return true
+            }
         })
-
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun showDetails(picture: Picture) {
+        val transactionInitialization = supportFragmentManager
+            .beginTransaction()
+            .detach(fragmentList[0])
+            .attach(fragmentList[1])
+            .addToBackStack("swap fragment")
+        transactionInitialization.commit()
+        itemDetail.getPicture(picture)
+        searchViewChanged(false, picture.Name)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun searchFilter(text: String){
+    private fun searchFilter(text: String) {
         val searchText = text.lowercase(Locale.getDefault())
         val newPicture = mutableListOf<Picture>()
 
-        if (searchText.isNotEmpty()){
-            pictureCollection.forEach{
-                if (it.Name.lowercase(Locale.getDefault()).contains(text)){
+        if (searchText.isNotEmpty()) {
+            viewHolder.adapter.listItem.forEach {
+                if (it.Name.lowercase(Locale.getDefault()).contains(text)) {
                     Log.d("Filtered", it.Name)
                     newPicture.add(it)
                 }
-                adapter.listItem = newPicture
+                viewHolder.adapter.listItem = newPicture
             }
         } else {
-            adapter.listItem = UserHolder.createCollectionPictures()
+            viewHolder.adapter.listItem = UserHolder.createCollectionPictures()
         }
-        bindingMain.recycleView.adapter?.notifyDataSetChanged()
+        viewHolder.adapter.notifyDataSetChanged()
     }
 
-    private fun setupRecycleView(){
-        bindingMain.recycleView.layoutManager = verticalLinearLayoutManager
-        val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        adapter = Adapter(this::showSnackbar)
-        adapter.listItem = UserHolder.createCollectionPictures()
-        bindingMain.recycleView.adapter = adapter
-    }
-
-    private fun showSnackbar(picture: Picture, trigger: String): Unit{
-        var text: String = "Произошла ошибка"
-        when (trigger){
-            "itemInfo" -> text = "Нажата карточка: " + picture.Name
-            "like" -> text = "Нажат лайк: " + picture.Name
-        }
-        Snackbar.make(bindingMain.root, text, 3000).show()
+    private fun searchViewChanged(active: Boolean, title: String){
+        supportActionBar?.setDisplayHomeAsUpEnabled(!active)
+        supportActionBar?.setDisplayShowHomeEnabled(!active)
+        bindingMain.appBar.findViewById<SearchView>(R.id.searchView).isVisible = active
+        supportActionBar?.title = title
     }
 }
 
-
-
-//interface ActivityCallBack {
-//    fun searchFilter(inputText: String): String
-//}
-//
-//class BaseParcelable : Parcelable {
-//
-//    var value: Any
-//
-//    constructor(value: Any) {
-//        this.value = value
-//    }
-//
-//    constructor(parcel: Parcel) {
-//        this.value = Any()
-//    }
-//
-//    override fun writeToParcel(dest: Parcel?, flags: Int) {}
-//
-//    override fun describeContents(): Int = 0
-//
-//    companion object CREATOR : Parcelable.Creator<BaseParcelable> {
-//
-//        override fun createFromParcel(parcel: Parcel): BaseParcelable {
-//            return BaseParcelable(parcel)
-//        }
-//
-//        override fun newArray(size: Int): Array<BaseParcelable?> {
-//            return arrayOfNulls(size)
-//        }
-//    }
-//}
+interface ActivityCallBack {
+    fun showDetails(picture: Picture)
+}

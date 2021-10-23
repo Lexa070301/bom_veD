@@ -9,7 +9,6 @@ import com.example.bom_ved.databinding.ItemRecyclerviewBinding
 import kotlin.reflect.KFunction2
 
 class Adapter(
-//    private val list: List<Picture> = listOf(),
     private val clickItem: KFunction2<Picture, String, Unit>
 ): RecyclerView.Adapter<Adapter.Holder>() {
 
@@ -44,6 +43,9 @@ class Adapter(
             }
             binding.buttonLike.setOnClickListener{
                 clickItem.invoke(picture, "like")
+            }
+            binding.itemName.setOnClickListener{
+                clickItem.invoke(picture, "details")
             }
         }
     }

@@ -19,7 +19,6 @@
             android:layout_width="@dimen/icon_width"
             android:layout_height="@dimen/icon_height"
 
-
             app:layout_constraintEnd_toStartOf="@id/item_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

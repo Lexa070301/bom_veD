@@ -9,4 +9,7 @@
     <style name="TextStyleNormal">
         <item name="android:textSize">@dimen/textSizeNormal</item>
     </style>
+    <style name="TextStyleDetails">
+        <item name="android:textSize">@dimen/textSizeMax</item>
+    </style>
 </resources>

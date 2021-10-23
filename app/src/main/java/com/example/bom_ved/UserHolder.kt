@@ -110,21 +110,6 @@ object UserHolder {
         }
         return pictures
     }
-
-    fun createCollectionPictures2(): ArrayList<Picture>{
-        val pictures: ArrayList<Picture> = ArrayList<Picture>()
-        for (i in 0..4){
-            val picture = Picture(
-                picturesName[i],
-                pictureImages[i],
-                pictureDate[i],
-                pictureInformation[i],
-                pictureGender[i]
-            )
-            pictures.add(picture)
-        }
-        return pictures
-    }
 }
 
 data class Picture(

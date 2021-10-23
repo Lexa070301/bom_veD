@@ -3,10 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/searchView"
-        android:title="@string/search_text"
-        android:textIsSelectable="false"
         android:editable="false"
         android:icon="@drawable/ic_baseline_search_24"
-        app:showAsAction="always|withText|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        android:textIsSelectable="false"
+        android:title="@string/search_text"
+        android:visible="true"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|withText|collapseActionView" />
+
+
 </menu>

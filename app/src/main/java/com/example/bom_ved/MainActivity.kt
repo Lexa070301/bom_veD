@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
     private var itemDetail: FragmentItemDetail = FragmentItemDetail()
     private val fragmentList: MutableList<Fragment> = mutableListOf()
 
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

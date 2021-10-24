@@ -14,6 +14,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), ActivityCallBack {
     private lateinit var bindingMain: ActivityMainBinding
+    // Добавленные переменные
     private var viewHolder: FragmentViewHolder = FragmentViewHolder()
     private var itemDetail: FragmentItemDetail = FragmentItemDetail()
     private val fragmentList: MutableList<Fragment> = mutableListOf()
@@ -22,11 +23,11 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         bindingMain = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMain.root)
-        setSupportActionBar(bindingMain.appBar)
 
+        // Иницилизация appBar и кнопки назад в appBar
+        setSupportActionBar(bindingMain.appBar)
         bindingMain.appBar.setNavigationOnClickListener {
             val transactionInitialization = supportFragmentManager
                 .beginTransaction()
@@ -37,9 +38,9 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
             searchViewChanged(true, "Главная страница")
         }
 
+        // Иницилизация списка фрагментов
         fragmentList.add(viewHolder)
         fragmentList.add(itemDetail)
-
         val transactionInitialization = supportFragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, fragmentList[0])
@@ -48,22 +49,18 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
             .addToBackStack("initialization fragment")
         transactionInitialization.commit()
 
+        // Иницилизация списка для Adapter
         viewHolder.adapter.listItem = UserHolder.createCollectionPictures()
         viewHolder.adapter.notifyDataSetChanged()
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1){
-            supportFragmentManager.popBackStack()
-        }
-        searchViewChanged(true, "Главная страница")
-    }
-
+    // Подключение searchView в appBar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
 
         val search = menu?.findItem(R.id.searchView)
         val searchView = search?.actionView as? SearchView
+
         searchView?.isSubmitButtonEnabled = false
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -72,7 +69,6 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
                 }
                 return true
             }
-
             override fun onQueryTextChange(query: String?): Boolean {
                 if (query != null) {
                     searchFilter(query)
@@ -83,6 +79,15 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
         return super.onCreateOptionsMenu(menu)
     }
 
+    // Переопределение действия на кнопку назад
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1){
+            supportFragmentManager.popBackStack()
+        }
+        searchViewChanged(true, "Главная страница")
+    }
+
+    // Переход в в frame_item_detail и изменение appBar
     override fun showDetails(picture: Picture) {
         val transactionInitialization = supportFragmentManager
             .beginTransaction()
@@ -94,6 +99,7 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
         searchViewChanged(false, picture.Name)
     }
 
+    // Фильтр массива, изменение локального массива в Adapter и обновление ViewHolder
     @SuppressLint("NotifyDataSetChanged")
     private fun searchFilter(text: String) {
         val searchText = text.lowercase(Locale.getDefault())
@@ -113,6 +119,7 @@ class MainActivity : AppCompatActivity(), ActivityCallBack {
         viewHolder.adapter.notifyDataSetChanged()
     }
 
+    // Включение и выключение кнопки поиска в appBar
     private fun searchViewChanged(active: Boolean, title: String){
         supportActionBar?.setDisplayHomeAsUpEnabled(!active)
         supportActionBar?.setDisplayShowHomeEnabled(!active)

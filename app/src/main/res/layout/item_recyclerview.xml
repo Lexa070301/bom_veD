@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_items"
-
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +21,6 @@
             app:layout_constraintEnd_toStartOf="@id/item_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             />
 
         <TextView
@@ -37,7 +35,6 @@
 
             app:layout_constraintStart_toEndOf="@id/image_avatar"
             app:layout_constraintTop_toTopOf="@id/image_avatar"
-
             />
 
         <TextView
@@ -49,7 +46,6 @@
 
             app:layout_constraintStart_toStartOf="@id/item_name"
             app:layout_constraintTop_toBottomOf="@id/item_name"
-
             />
 
         <TextView
@@ -66,26 +62,25 @@
             android:maxLines="3"
             android:lines="3"
             android:scrollHorizontally="true"
-            android:ellipsize="middle"
-            app:layout_constraintStart_toStartOf="parent"
+            android:ellipsize="end"
 
-            app:layout_constraintTop_toBottomOf="@+id/image_avatar" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_avatar"
+            />
 
         <TextView
             android:id="@+id/item_gender_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_items"
-
-            style="@style/TextStyleNormal"
-
             android:text="@string/Item_gender_type_example"
             android:textColor="@color/yellow"
+
+            style="@style/TextStyleNormal"
 
             app:layout_constraintTop_toBottomOf="@id/item_information"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-
             />
 
         <Button
@@ -94,15 +89,9 @@
             android:layout_height="@dimen/button_like_height"
             android:background="@drawable/ic_thumb_up"
             android:layout_marginTop="@dimen/margin_items"
-            android:text=""
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_information"
-
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

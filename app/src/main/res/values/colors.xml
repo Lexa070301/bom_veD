@@ -7,9 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    #FFD866
-    #303342
-    #A6E22E
+    <!-- CUSTOM COLORS -->
     <color name="almost_white">#FFACACAC</color>
     <color name="yellow">#FFFFD867</color>
     <color name="background">#FF282A3A</color>

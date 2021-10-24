@@ -1,9 +1,6 @@
 package com.example.bom_ved
 
 
-import androidx.annotation.DrawableRes
-
-
 object UserHolder {
     private val picturesName = arrayOf(
         "TYLER 1",

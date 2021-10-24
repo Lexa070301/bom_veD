@@ -8,10 +8,10 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bom_ved.databinding.ItemRecyclerviewBinding
 import kotlin.reflect.KFunction2
 
-class Adapter(
-    private val clickItem: KFunction2<Picture, String, Unit>
-): RecyclerView.Adapter<Adapter.Holder>() {
+class Adapter(private val clickItem: KFunction2<Picture, String, Unit>): RecyclerView.Adapter<Adapter.Holder>() {
+    // В clickItem передаем showSnackbar() из FragmentViewHolder
 
+    // Добавленные переменные
     var listItem: List<Picture> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -30,23 +30,18 @@ class Adapter(
 
     inner class Holder internal constructor(private val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(picture: Picture, clickItem: KFunction2<Picture, String, Unit>) = binding.run{
+
+            // Отдаем данные в item_recycleview
             itemName.text = picture.Name
-            imageAvatar.load(picture.imageURL){
-                transformations(RoundedCornersTransformation(20f))
-            }
+            imageAvatar.load(picture.imageURL){ transformations(RoundedCornersTransformation(20f)) }
             itemDate.text = picture.Date
             itemInformation.text = picture.Information
             itemGenderType.text = picture.Gender
 
-            binding.cardId.setOnClickListener{
-                clickItem.invoke(picture, "itemInfo")
-            }
-            binding.buttonLike.setOnClickListener{
-                clickItem.invoke(picture, "like")
-            }
-            binding.itemName.setOnClickListener{
-                clickItem.invoke(picture, "details")
-            }
+            // Подключаем слушателя на клик по карточкам
+            binding.cardId.setOnClickListener{ clickItem.invoke(picture, "itemInfo") }
+            binding.buttonLike.setOnClickListener{ clickItem.invoke(picture, "like") }
+            binding.itemName.setOnClickListener{ clickItem.invoke(picture, "details") }
         }
     }
 }

@@ -17,26 +17,24 @@
             android:layout_width="@dimen/icon_width_max"
             android:layout_height="@dimen/icon_height_max"
 
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             />
 
         <TextView
             android:id="@+id/item_name"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_minimum"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_items_2x"
             android:text="@string/Item_name_example"
+            android:textColor="@color/white"
 
             style="@style/TextStyleDetails"
 
-            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image_avatar"
-
-            app:layout_constraintTop_toTopOf="@id/image_avatar" />
+            app:layout_constraintTop_toTopOf="@id/image_avatar"
+            />
 
         <TextView
             android:id="@+id/item_date"
@@ -49,7 +47,6 @@
 
             app:layout_constraintStart_toStartOf="@id/item_name"
             app:layout_constraintTop_toBottomOf="@id/item_name"
-
             />
 
         <TextView
@@ -63,7 +60,6 @@
 
             app:layout_constraintTop_toBottomOf="@id/item_name"
             app:layout_constraintEnd_toEndOf="parent"
-
             />
 
         <TextView
@@ -71,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_items_2x"
-            android:ellipsize="middle"
+            android:ellipsize="end"
             android:scrollHorizontally="true"
             android:text="@string/Item_information_example"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -80,8 +76,7 @@
             style="@style/TextStyleDetails"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_avatar" />
-
+            app:layout_constraintTop_toBottomOf="@+id/image_avatar"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

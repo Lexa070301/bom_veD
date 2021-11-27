@@ -50,10 +50,11 @@ class AdapterOldNewCharacter(oldCharacterInfo: OldCharacterInfo) {
 
 fun main(){
     val oldGraves = OldCharacterInfo("200hp","100mp","100KM","20hp")
-    // Не можем созать нового героя просто обратившись к старому герою
+    // Не можем созать нового героя просто обратившись к старому герою, нам нужно преобразовать данные
+    // через адаптер
     // val newGraves = NewCharacterInfo(oldGraves.getStats())
 
-    // Иницилизируем адаптер и пересобираем значение в MutableList<String>
+    // Иницилизируем адаптер и преобразовываем данные в MutableList<String>
     val adapter = AdapterOldNewCharacter(oldGraves)
 
     // Теперь можно собрать нового героя обратившись к данным старого героя и использовать новые методы

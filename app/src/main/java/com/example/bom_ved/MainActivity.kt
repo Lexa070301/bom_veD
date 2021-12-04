@@ -13,11 +13,11 @@ import com.example.bom_ved.databinding.ActivityMainBinding
 import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity(), TaskCallbacks {
+class MainActivity : AppCompatActivity(), TaskCallbacks, ActivityCallBack {
     private lateinit var binding: ActivityMainBinding
     private val fragment = Adapter()
     private var myResult: Int = 0
-    var adapter: Adapter = Adapter()
+    private var adapter: Adapter = Adapter()
 
     private var handler: Handler? = null
     private var callbacks: TaskCallbacks? = null
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), TaskCallbacks {
             showProgress()
         }
 
-        setupRecycleView()
+//        setupRecycleView()
         adapter.listItem = listItem
     }
 
@@ -49,10 +49,10 @@ class MainActivity : AppCompatActivity(), TaskCallbacks {
     }
 
     // Подключение и настройка recycleView
-    private fun setupRecycleView(){
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.recyclerView.adapter = adapter
-    }
+//    private fun setupRecycleView(){
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+//        binding.recyclerView.adapter = adapter
+//    }
 
     private fun showProgress(){
 
@@ -127,10 +127,17 @@ class MainActivity : AppCompatActivity(), TaskCallbacks {
 
         Log.d("MESSAGE", i)
     }
+
+    override fun showDetails(string: String) {
+    }
 }
 
 interface TaskCallbacks {
     fun onPreExecuted()
     fun onCancelled()
     fun onPostExecute(i: String)
+}
+
+interface ActivityCallBack {
+    fun showDetails(string: String)
 }

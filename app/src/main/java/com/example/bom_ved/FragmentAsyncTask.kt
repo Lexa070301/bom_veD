@@ -18,12 +18,17 @@ import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 
 
-class FragmentViewHolder: Fragment() {
+class FragmentAsyncTask: Fragment(), TaskCallbacks  {
     private lateinit var binding: FrameAsyncTaskBinding
     // Добавленные переменные
-    private var myTask: MainActivity.MyAsyncTask? = null
-//    var adapter: Adapter = Adapter( this::showSnackbar)
+
+
+    private var adapter: Adapter = Adapter()
+    private var handler: Handler? = null
     private var callbacks: TaskCallbacks? = null
+    private var myTask: MyAsyncTask? = null
+
+    private var listItem:MutableList<String> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +37,14 @@ class FragmentViewHolder: Fragment() {
     ): View {
         binding = FrameAsyncTaskBinding.inflate(inflater, container, false)
         return binding.root
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setRetainInstance(true)
+        callbacks = this
+        startTask()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,23 +56,8 @@ class FragmentViewHolder: Fragment() {
     // Подключение и настройка recycleView
     private fun setupRecycleView(){
         binding.recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-//        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
-
-    // Обработка нажатий на карточки в ViewHolder
-//    private fun showSnackbar(picture: Picture, trigger: String): Unit{
-//        var text: String = "Произошла ошибка"
-//        when (trigger){
-//            "itemInfo" -> text = "Нажата карточка: " + picture.Name
-//            "like" -> text = "Нажат лайк: " + picture.Name
-//            "details" -> {
-//                val activityCallBack = requireActivity() as ActivityCallBack
-//                activityCallBack.showDetails(picture)
-//                return
-//            }
-//        }
-//        Snackbar.make(binding.root, text, 3000).show()
-//    }
 
     @SuppressLint("StaticFieldLeak")
     inner class MyAsyncTask : AsyncTask<Unit, Int, Unit>() {
@@ -98,5 +96,30 @@ class FragmentViewHolder: Fragment() {
         }
         handler = Handler(callback)
         myTask!!.execute()
+    }
+
+    private fun cancelTask(){
+        callbacks = null
+    }
+
+    override fun onPreExecuted() {
+        Log.d("cancel", "executed")
+    }
+
+    override fun onCancelled() {
+        Log.d("cancel", "cancel")
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onPostExecute(i: String) {
+        listItem.add(i)
+        adapter.listItem = listItem
+        adapter.notifyDataSetChanged()
+
+        Log.d("MESSAGE", i)
+    }
+
+    companion object {
+        const val MyTag = "FRAGMENT_ASYNC"
     }
 }

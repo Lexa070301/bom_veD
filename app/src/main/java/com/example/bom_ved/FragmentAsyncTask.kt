@@ -13,22 +13,21 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bom_ved.databinding.FrameAsyncTaskBinding
-import com.google.android.material.snackbar.Snackbar
 import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 
 
-class FragmentAsyncTask: Fragment(), TaskCallbacks  {
+class FragmentAsyncTask : Fragment(), TaskCallbacks {
     private lateinit var binding: FrameAsyncTaskBinding
+
     // Добавленные переменные
-
-
     private var adapter: Adapter = Adapter()
+
     private var handler: Handler? = null
     private var callbacks: TaskCallbacks? = null
     private var myTask: MyAsyncTask? = null
 
-    private var listItem:MutableList<String> = mutableListOf()
+    private var listItem: MutableList<String> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +36,6 @@ class FragmentAsyncTask: Fragment(), TaskCallbacks  {
     ): View {
         binding = FrameAsyncTaskBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +52,9 @@ class FragmentAsyncTask: Fragment(), TaskCallbacks  {
     }
 
     // Подключение и настройка recycleView
-    private fun setupRecycleView(){
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+    private fun setupRecycleView() {
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter = adapter
     }
 
@@ -68,7 +67,7 @@ class FragmentAsyncTask: Fragment(), TaskCallbacks  {
         override fun doInBackground(vararg params: Unit?) {
             Log.d("Started", "I'm Started")
             try {
-                for (i in 0..3) {
+                for (i in 0..2) {
                     TimeUnit.SECONDS.sleep(1)
                     if (isCancelled) break
                 }
@@ -79,8 +78,8 @@ class FragmentAsyncTask: Fragment(), TaskCallbacks  {
 
         override fun onPostExecute(result: Unit?) {
             callbacks?.let {
-                for (i in 1..100){
-                    handler?.sendEmptyMessageDelayed(i, ((i-1)*500).toLong())
+                for (i in 1..100) {
+                    handler?.sendEmptyMessageDelayed(i, ((i - 1) * 2000).toLong())
                 }
             }
         }
@@ -88,18 +87,13 @@ class FragmentAsyncTask: Fragment(), TaskCallbacks  {
 
     private fun startTask() {
         myTask = MyAsyncTask()
-        val callback = object : Handler.Callback {
-            override fun handleMessage(msg: Message): Boolean {
-                callbacks?.onPostExecute(msg.toString())
-                return false
-            }
+        val callback = Handler.Callback { msg ->
+            callbacks?.onPostExecute("Инпут номер: " + msg.what.toString())
+            false
         }
+
         handler = Handler(callback)
         myTask!!.execute()
-    }
-
-    private fun cancelTask(){
-        callbacks = null
     }
 
     override fun onPreExecuted() {

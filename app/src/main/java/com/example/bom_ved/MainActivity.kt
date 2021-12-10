@@ -1,7 +1,5 @@
 package com.example.bom_ved
 
-
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,15 +14,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val lastFragmentAsyncTask = supportFragmentManager.findFragmentByTag(FragmentAsyncTask.MyTag)
+        val lastFragmentAsyncTask =
+            supportFragmentManager.findFragmentByTag(FragmentAsyncTask.MyTag)
 
-        if (lastFragmentAsyncTask == null){
+        if (lastFragmentAsyncTask == null) {
             val transactionInitialization = supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_container, FragmentAsyncTask(), FragmentAsyncTask.MyTag)
-                .addToBackStack("swap fragment")
+                .addToBackStack("added fragment")
             transactionInitialization.commit()
-        } else{
+        } else {
             Log.d("fragment", "fragment is already exists")
         }
     }
